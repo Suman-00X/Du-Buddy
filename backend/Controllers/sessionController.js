@@ -1,5 +1,5 @@
-import Session from '../models/sessionModel.js';
-import User from '../models/userModel.js';
+import Session from '../Database/SessionDB.js';
+import User from '../Database/UserDB.js';
 import nodemailer from 'nodemailer';
 
 
