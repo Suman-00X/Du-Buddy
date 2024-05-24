@@ -55,3 +55,43 @@ export const loginUser = async (req, res) => {
         res.status(500).json({ message: 'Something went wrong', error });
     }
 };
+
+
+export const getProfile = async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const user = await User.findById(userId).select('-password'); 
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong', error });
+    }
+};
+
+export const updateProfile = async (req, res) => {
+    const userId = req.user.id;
+    const { name, roll, bio, email, type } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update user fields
+        if (name) user.name = name;
+        if (roll) user.roll = roll;
+        if (bio) user.bio = bio;
+        if (email) user.email = email;
+        if (type) user.type = type;
+
+        await user.save();
+
+        res.status(200).json({ message: 'Profile updated successfully', user });
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong', error });
+    }
+};

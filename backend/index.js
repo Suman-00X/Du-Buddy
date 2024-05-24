@@ -11,7 +11,7 @@ import sessionRoutes from './routes/sessionRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = 5000;
+const PORT = 3001;
 
 // Middleware
 app.use(express.json());
@@ -19,8 +19,8 @@ app.use(cors());
 app.use(cookieParser());
 
 // Routes
-app.use('/users', userRoutes);
-app.use('/sessions', sessionRoutes);
+app.use('api/users', userRoutes);
+app.use('api/sessions', sessionRoutes);
 
 // MongoDB Connection + Listen
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -30,4 +30,4 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
       console.log(`Server is running on port ${PORT}`);
     });
   })
-  .catch((error) => console.error('Error connecting to MongoDB:', error));
+  .catch((error) => console.error('Error connecting to MongoDB:', error.message));
