@@ -26,7 +26,8 @@ Teacher Buddy is a web application designed to facilitate communication and sche
 1. Clone the repository: `git clone https://github.com/Suman-00X/Du-Buddy.git`
 2. Navigate to the project directory: `cd du-buddy`
 3. Install backend dependencies: `cd backend` `npm install`
-4. Start Backend Server : nodemon index.js
+4. Setup .env in backend directory: MONGO_URI(MongoDB Atlas connection string), JWT_SECRET, USER_EMAIL(the email which you want to use to send emails on class booking/acceptance/rejection), USER_PASS(password of email, in case yiu are using personal gmail account then use app password)
+5. Start Backend Server : nodemon index.js
 5.Install frontend dependencies : `cd ..` `cd frontend` `npm install`  
 6. Start the development server: `npm start`
 7. Open your browser and visit `http://localhost:3000` to view the application.
