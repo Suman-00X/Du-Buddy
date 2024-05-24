@@ -1,4 +1,3 @@
-Certainly! Here's an updated README with project setup instructions, including the app URL and API URL:
 
 ---
 
@@ -47,5 +46,3 @@ Contributions are welcome! If you find any bugs or want to suggest new features,
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
-
-Feel free to customize and expand upon this README as needed for your project!
