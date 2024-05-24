@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import StudentDashboard from '../components/StudentDashboard';
 import TeacherDashboard from '../components/TeacherDashboard';
+import './Home.css'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -10,11 +11,11 @@ const Home = () => {
 
     return (
         <div>
-            <h1>Home</h1>
             {userType === 'student' ? (
                 <>
-                    <button onClick={() => navigate('/session-request')}>Request Session</button>
-                    <StudentDashboard />
+                    <button className="request-button" onClick={() => navigate('/session-request')}>
+                        Request Session
+                    </button>                    <StudentDashboard />
                 </>
             ) : userType === 'teacher' ? (
                 <TeacherDashboard />

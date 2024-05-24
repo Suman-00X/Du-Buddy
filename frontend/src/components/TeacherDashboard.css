@@ -1,0 +1,71 @@
+.teacher-dashboard {
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.teacher-dashboard h1, .teacher-dashboard h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.requests-table th, .requests-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.requests-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.requests-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.requests-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.requests-table a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.requests-table a:hover {
+    text-decoration: underline;
+}
+
+.action-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    margin: 0 0.5rem;
+    border-radius: 4px;
+}
+
+.action-button.accept {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.action-button.reject {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.action-button.accept:hover {
+    background-color: #218838;
+}
+
+.action-button.reject:hover {
+    background-color: #c82333;
+}

@@ -9,7 +9,7 @@ const Profile = () => {
         const fetchProfile = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://localhost:3001/api/users/profile', {
+                const response = await axios.get('https://du-backend.onrender.com/api/users/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -35,7 +35,7 @@ const Profile = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.patch('http://localhost:3001/api/users/profile', profile, {
+            await axios.patch('https://du-backend.onrender.com/api/users/profile', profile, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -49,13 +49,14 @@ const Profile = () => {
     };
 
     return (
-        <div>
-            <h1>Profile</h1>
+        <div style={styles.container}>
+            <h1 style={styles.heading}>Profile</h1>
             {isEditing ? (
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label>Name:</label>
+                        <label style={styles.label}>Name:</label>
                         <input
+                            style={styles.input}
                             type="text"
                             name="name"
                             value={profile.name}
@@ -63,8 +64,9 @@ const Profile = () => {
                         />
                     </div>
                     <div>
-                        <label>Bio:</label>
+                        <label style={styles.label}>Bio:</label>
                         <input
+                            style={styles.input}
                             type="text"
                             name="bio"
                             value={profile.bio}
@@ -72,26 +74,70 @@ const Profile = () => {
                         />
                     </div>
                     <div>
-                        <label>Email:</label>
+                        <label style={styles.label}>Email:</label>
                         <input
+                            style={styles.input}
                             type="email"
                             name="email"
                             value={profile.email}
                             onChange={handleInputChange}
                         />
                     </div>
-                    <button type="submit">Save</button>
+                    <button style={styles.button} type="submit">Save</button>
                 </form>
             ) : (
                 <div>
                     <p><strong>Name:</strong> {profile.name}</p>
                     <p><strong>Bio:</strong> {profile.bio}</p>
                     <p><strong>Email:</strong> {profile.email}</p>
-                    <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+                    <button style={styles.editButton} onClick={() => setIsEditing(true)}>Edit Profile</button>
                 </div>
             )}
         </div>
     );
+};
+
+const styles = {
+    container: {
+        maxWidth: '600px',
+        margin: 'auto',
+        padding: '20px',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        backgroundColor: '#f9f9f9',
+    },
+    heading: {
+        textAlign: 'center',
+        marginBottom: '20px',
+    },
+    label: {
+        fontWeight: 'bold',
+        marginBottom: '5px',
+    },
+    input: {
+        width: '100%',
+        padding: '8px',
+        marginBottom: '15px',
+        borderRadius: '5px',
+        border: '1px solid #ccc',
+    },
+    button: {
+        width: '100%',
+        padding: '10px',
+        borderRadius: '5px',
+        backgroundColor: '#007bff',
+        color: '#fff',
+        border: 'none',
+        cursor: 'pointer',
+    },
+    editButton: {
+        padding: '10px',
+        borderRadius: '5px',
+        backgroundColor: '#28a745',
+        color: '#fff',
+        border: 'none',
+        cursor: 'pointer',
+    },
 };
 
 export default Profile;

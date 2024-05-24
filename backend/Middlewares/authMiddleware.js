@@ -8,10 +8,13 @@ export const authenticateUser = (req, res, next) => {
     }
 
     try {
+        console.log("token", token);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("decoded", decoded);
         req.user = decoded;
         next();
     } catch (error) {
+        console.log(error)
         res.status(401).json({ message: 'Token is not valid' });
     }
 };

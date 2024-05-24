@@ -72,17 +72,24 @@ export const createSessionRequest = async (req, res) => {
 };
 
 // Get all session requests for a teacher
+// Get all session requests for a teacher
 export const getAllRequests = async (req, res) => {
     const teacherId = req.user.id;
 
     try {
-        const requests = await Session.find({ teachers: teacherId });
+        const requests = await Session.find({ teachers: teacherId })
+            .populate({
+                path: 'student',
+                select: 'name' 
+            })
+            .populate('teachers', 'name');
+
+            console.log("requests", requests)
         res.status(200).json(requests);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong', error });
     }
 };
-
 // Respond to a session request
 export const respondToRequest = async (req, res) => {
     const { id } = req.params;

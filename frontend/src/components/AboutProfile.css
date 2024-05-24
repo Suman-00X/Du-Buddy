@@ -1,0 +1,32 @@
+.about-profile {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.about-profile h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.about-profile p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0.5rem 0;
+}
+
+.about-profile p strong {
+    color: #555;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #999;
+    margin-top: 2rem;
+}

@@ -14,6 +14,5 @@ router.post('/sessions', authenticateUser, createSessionRequest);
 router.get('/sessions', authenticateUser, authorizeTeacher, getAllRequests);
 router.patch('/sessions/:id', authenticateUser, authorizeTeacher, respondToRequest);
 router.get('/student/sessions', authenticateUser, getStudentRequests);
-router.get('/sessions/teachers', authenticateUser, getAllTeachers); // New route to get all teachers
-
+router.get('/sessions/teachers', authenticateUser, getAllTeachers);
 export default router;

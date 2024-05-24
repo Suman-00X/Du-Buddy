@@ -1,7 +1,7 @@
 import express from 'express';
 
 //controllers import
-import { registerUser, loginUser, getProfile, updateProfile } from '../Controllers/userController.js';
+import { registerUser, loginUser, getProfile, updateProfile, getUserById } from '../Controllers/userController.js';
 
 import { authenticateUser } from '../Middlewares/authMiddleware.js';
 
@@ -14,6 +14,7 @@ router.post('/login', loginUser);
 // User profile routes
 router.get('/profile', authenticateUser, getProfile);
 router.patch('/profile', authenticateUser, updateProfile);
+router.get('/:id', getUserById);
 
 
 export default router;

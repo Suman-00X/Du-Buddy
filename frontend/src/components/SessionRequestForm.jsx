@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './SessionRequestForm.css'; // Import the CSS file
 
 const SessionRequestForm = () => {
     const [teachers, setTeachers] = useState([]);
@@ -10,7 +11,7 @@ const SessionRequestForm = () => {
         const fetchTeachers = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3001/api/sessions/sessions/teachers', {
+                const response = await axios.get('https://du-backend.onrender.com/api/sessions/sessions/teachers', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -28,7 +29,7 @@ const SessionRequestForm = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
         try {
-            await axios.post('http://localhost:3001/api/sessions/sessions', {
+            await axios.post('https://du-backend.onrender.com/api/sessions/sessions', {
                 teacherIds: selectedTeachers,
                 suggestedTimes
             }, {
@@ -50,28 +51,25 @@ const SessionRequestForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="session-request-form" onSubmit={handleSubmit}>
             <label htmlFor="teachers">Select Teachers:</label>
             <select id="teachers" multiple onChange={(e) => setSelectedTeachers([...e.target.selectedOptions].map(option => option.value))}>
                 {teachers.map(teacher => (
                     <option key={teacher._id} value={teacher._id}>{teacher.name}</option>
                 ))}
             </select>
-            <br />
             {suggestedTimes.map((time, index) => (
                 <div key={index}>
                     <label htmlFor={`time-${index}`}>Suggested Time {index + 1}:</label>
                     <input id={`time-${index}`} type="datetime-local" value={time} onChange={(e) => handleTimeChange(index, e.target.value)} required />
                 </div>
             ))}
-            <br />
             <label>Selected Time:</label>
             <ul>
                 {suggestedTimes.map((time, index) => (
                     <li key={index}>{time}</li>
                 ))}
             </ul>
-            <br />
             <button type="submit">Request Session</button>
         </form>
     );

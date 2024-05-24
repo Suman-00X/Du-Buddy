@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ProfileLink from '../components/ProfileLink';
+import './StudentDashboard.css'; 
 
 const StudentDashboard = () => {
     const [requests, setRequests] = useState([]);
@@ -8,10 +10,9 @@ const StudentDashboard = () => {
     useEffect(() => {
         const fetchProfileAndRequests = async () => {
             const token = localStorage.getItem('token');
-            console.log("token", token);
             try {
                 // Fetch profile
-                const profileResponse = await axios.get('http://localhost:3001/api/users/profile', {
+                const profileResponse = await axios.get('https://du-backend.onrender.com/api/users/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -19,12 +20,11 @@ const StudentDashboard = () => {
                 setStudentName(profileResponse.data.name);
 
                 // Fetch session requests
-                const requestsResponse = await axios.get('http://localhost:3001/api/sessions/student/sessions', {
+                const requestsResponse = await axios.get('https://du-backend.onrender.com/api/sessions/student/sessions', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                console.log(requestsResponse);
                 setRequests(requestsResponse.data);
             } catch (error) {
                 console.error(error);
@@ -35,9 +35,9 @@ const StudentDashboard = () => {
     }, []);
 
     return (
-        <div>
+        <div className="student-dashboard">
             <h1>Welcome {studentName} to your dashboard (student)</h1>
-            <table>
+            <table className="requests-table">
                 <thead>
                     <tr>
                         <th>S. No</th>
@@ -48,9 +48,11 @@ const StudentDashboard = () => {
                 </thead>
                 <tbody>
                     {requests.map((request, index) => (
-                        <tr key={request._id}>
+                        <tr key={request.teachers[0]._id}>
                             <td>{index + 1}</td>
-                            <td>{request.teachers.map(teacher => teacher.name).join(', ')}</td>
+                            <td>
+                                <ProfileLink id={request.teachers[0]._id} name={request.teachers[0].name} userType="teacher" />
+                            </td>
                             <td>{request.suggestedTimes.join(', ')}</td>
                             <td>{request.status}</td>
                         </tr>
