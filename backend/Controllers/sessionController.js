@@ -1,11 +1,15 @@
 import Session from '../Database/SessionDB.js';
 import User from '../Database/UserDB.js';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
-//Nodemailer service
+// Nodemailer service
 const transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -23,13 +27,12 @@ export const createSessionRequest = async (req, res) => {
             return res.status(400).json({ message: 'Invalid student' });
         }
 
-
         const teacherEmails = await User.find({
             _id: { $in: teacherIds },
             type: 'teacher'
         }).select('email');
 
-        const teacherName = await User.find({
+        const teacherNames = await User.find({
             _id: { $in: teacherIds },
             type: 'teacher'
         }).select('name');
@@ -43,21 +46,24 @@ export const createSessionRequest = async (req, res) => {
 
         await session.save();
 
-        teacherEmails.forEach(({ email }) => {
+        console.log("transporter-2", transporter);
+
+
+        teacherEmails.forEach(({ email }, index) => {
             transporter.sendMail({
                 from: process.env.EMAIL_USER,
                 to: email,
                 subject: 'New Session Request',
-                text: `Hi ${teacherName} \n\n You have a new session request from ${student.name}. Session details can be seen in the app. you can accept/reject the session according to your choice. \n\n Thanks and Regards\n Team Du-Buddy`
+                text: `Hi ${teacherNames[index].name},\n\nYou have a new session request from ${student.name}. Session details can be seen in the app. You can accept/reject the session according to your choice.\n\nThanks and Regards,\nTeam Du-Buddy`
             });
         });
 
         transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: student.email,
-            subject : 'New Session Request',
-            text: `Hi ${student.name} \n\n Your request has been sent. You will be notified soon whether your request has been accepted or rejected based on teacher availability. \n\n Thanks and Regards \nTeam Du-Buddy`
-        })
+            subject: 'New Session Request',
+            text: `Hi ${student.name},\n\nYour request has been sent. You will be notified soon whether your request has been accepted or rejected based on teacher availability.\n\nThanks and Regards,\nTeam Du-Buddy`
+        });
 
         res.status(201).json({ message: 'Session request created' });
     } catch (error) {
@@ -98,7 +104,7 @@ export const respondToRequest = async (req, res) => {
             from: process.env.EMAIL_USER,
             to: student.email,
             subject: `Session Request ${status}`,
-            text: `Hi ${student.name} \n\nYour session request has been ${status}. \n\nThanks & Regards \nTeam du-Buddy`
+            text: `Hi ${student.name},\n\nYour session request has been ${status}.\n\nThanks & Regards,\nTeam Du-Buddy`
         });
 
         res.status(200).json({ message: `Session request ${status}` });
@@ -107,18 +113,23 @@ export const respondToRequest = async (req, res) => {
     }
 };
 
-// Get the status of a session request
-export const getRequestStatus = async (req, res) => {
-    const { id } = req.params;
+// Get all session requests for a student
+export const getStudentRequests = async (req, res) => {
     const studentId = req.user.id;
 
     try {
-        const session = await Session.findById(id);
-        if (!session || session.student.toString() !== studentId) {
-            return res.status(400).json({ message: 'Invalid request' });
-        }
+        const sessions = await Session.find({ student: studentId }).populate('teachers', 'name');
+        res.status(200).json(sessions);
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong', error });
+    }
+};
 
-        res.status(200).json({ status: session.status });
+// Get all teachers
+export const getAllTeachers = async (req, res) => {
+    try {
+        const teachers = await User.find({ type: 'teacher' }).select('name email bio');
+        res.status(200).json(teachers);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong', error });
     }

@@ -1,19 +1,19 @@
 import express from 'express';
 
-//controllers import
-import { createSessionRequest, getAllRequests, respondToRequest, getRequestStatus } from '../Controllers/sessionController.js';
+// Controllers import
+import { createSessionRequest, getAllRequests, respondToRequest, getStudentRequests, getAllTeachers } from '../Controllers/sessionController.js';
 
-//middleware import
+// Middleware import
 import { authenticateUser } from '../Middlewares/authMiddleware.js';
-import {authorizeTeacher} from '../Middlewares/authorizeTeacher.js'
+import { authorizeTeacher } from '../Middlewares/authorizeTeacher.js';
 
 const router = express.Router();
 
-// Session routes (authenticate user then check whether the user is teacher or not)
-router.post('/sessions', authenticateUser, createSessionRequest);   
+// Session routes
+router.post('/sessions', authenticateUser, createSessionRequest);
 router.get('/sessions', authenticateUser, authorizeTeacher, getAllRequests);
 router.patch('/sessions/:id', authenticateUser, authorizeTeacher, respondToRequest);
-router.get('/sessions/:id/status', authenticateUser, getRequestStatus);
-
+router.get('/student/sessions', authenticateUser, getStudentRequests);
+router.get('/sessions/teachers', authenticateUser, getAllTeachers); // New route to get all teachers
 
 export default router;

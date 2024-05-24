@@ -3,29 +3,39 @@ import axios from 'axios';
 
 const TeacherDashboard = () => {
     const [requests, setRequests] = useState([]);
+    const [teacherName, setTeacherName] = useState('');
 
     useEffect(() => {
-        const fetchRequests = async () => {
+        const fetchProfileAndRequests = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await axios.get('http://localhost:3001/api/sessions/teacher', {
+                // Fetch profile
+                const profileResponse = await axios.get('http://localhost:3001/api/users/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setRequests(response.data);
+                setTeacherName(profileResponse.data.name);
+
+                // Fetch session requests
+                const requestsResponse = await axios.get('http://localhost:3001/api/sessions/sessions', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setRequests(requestsResponse.data);
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchRequests();
+        fetchProfileAndRequests();
     }, []);
 
     const respondToRequest = async (id, status) => {
         const token = localStorage.getItem('token');
         try {
-            await axios.patch(`http://localhost:3001/api/sessions/${id}`, { status }, {
+            await axios.patch(`http://localhost:3001/api/sessions/sessions/${id}`, { status }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -40,7 +50,7 @@ const TeacherDashboard = () => {
 
     return (
         <div>
-            <h1>Teacher Dashboard</h1>
+            <h1>Welcome {teacherName} to your dashboard (teacher)</h1>
             <table>
                 <thead>
                     <tr>

@@ -3,28 +3,40 @@ import axios from 'axios';
 
 const StudentDashboard = () => {
     const [requests, setRequests] = useState([]);
+    const [studentName, setStudentName] = useState('');
 
     useEffect(() => {
-        const fetchRequests = async () => {
+        const fetchProfileAndRequests = async () => {
             const token = localStorage.getItem('token');
+            console.log("token", token);
             try {
-                const response = await axios.get('http://localhost:3001/api/sessions/student', {
+                // Fetch profile
+                const profileResponse = await axios.get('http://localhost:3001/api/users/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setRequests(response.data);
+                setStudentName(profileResponse.data.name);
+
+                // Fetch session requests
+                const requestsResponse = await axios.get('http://localhost:3001/api/sessions/student/sessions', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log(requestsResponse);
+                setRequests(requestsResponse.data);
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchRequests();
+        fetchProfileAndRequests();
     }, []);
 
     return (
         <div>
-            <h1>Student Dashboard</h1>
+            <h1>Welcome {studentName} to your dashboard (student)</h1>
             <table>
                 <thead>
                     <tr>

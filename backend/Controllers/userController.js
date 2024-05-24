@@ -4,7 +4,11 @@ import jwt from 'jsonwebtoken';
 
 // Registation Controller
 export const registerUser = async (req, res) => {
+
+    console.log("registration controller hits");
     const { name, roll, bio, email, password, type } = req.body;
+
+    console.log(name, roll, bio, email, password, type);
 
     try {
         const existingUser = await User.findOne({ email });

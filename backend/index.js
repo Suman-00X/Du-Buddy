@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 //route import
-import userRoutes from './routes/userRoutes.js';
-import sessionRoutes from './routes/sessionRoutes.js';
+import userRoutes from './Routes/userRoutes.js';
+import sessionRoutes from './Routes/sessionRoutes.js';
 
 dotenv.config();
 
@@ -19,11 +19,11 @@ app.use(cors());
 app.use(cookieParser());
 
 // Routes
-app.use('api/users', userRoutes);
-app.use('api/sessions', sessionRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/sessions', sessionRoutes);
 
 // MongoDB Connection + Listen
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, )
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
